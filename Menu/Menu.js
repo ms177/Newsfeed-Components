@@ -9,9 +9,7 @@ let menuItems = [
   'Log Out'
 ];
 
-
-
-//   Step 1: Write a function that will create a menu component as seen below:
+// /* Step 1: Write a function that will create a menu component as seen below:
 
 //   <div class="menu">
 //     <ul>
@@ -19,28 +17,77 @@ let menuItems = [
 //     </ul>
 //   </div>
 
-//   The function takes an array as its only argument.
-
-const createMenu = (menu) => {
- 
+//   The function takes an array as its only argument. 
+  
 
 
+// Add those items to the <ul> 
 
-  return createMenu;
 
+
+
+
+
+const createMenu = (array) => {
+  const menu = document.createElement('div');
+  const ul = document.createElement('ul');
+
+  // Step 2: Inside this function, iterate over the array creating a list item <li> element for each item in the array. 
+  array.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    ul.appendChild(li);
+  });
+
+  menu.appendChild(ul);
+
+  menu.classList.add('menu');
+
+  // Step 3: Using a DOM selector, select the menu button (the element with a class of 'menu-button') currently on the DOM. 
+  const menuButton = document.querySelector('.menu-button');
+  let pushed = false;
+// Step 4: add a click event listener to the menu button. When clicked it should toggle the class 'menu--open' on the menu (your div with a 'menu' class).
+  menuButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    if (!pushed) {
+      showMenu();
+      pushed = true;
+    } else {
+      hideMenu();
+      pushed = false;
+    }
+  });
+
+  menu.addEventListener('click', (event) => {
+    event.stopPropagation();
+  });
+
+  window.addEventListener('click', () => {
+    if (pushed) {
+      hideMenu();
+      pushed = false;
+    }
+  })
+// Step 5: return the menu component. */
+  return menu;
 }
 
-  
+const showMenu = () => {
+  gsap.to('.menu', {
+    duration: 1,
+    left: 0
+  });
+}
 
-//   Step 2: Inside this function, iterate over the array creating a list item <li> element for each item in the array. 
-//   Add those items to the <ul>
+const hideMenu = () => {
+  gsap.to('.menu', {
+    duration: 1,
+    left: '-350px'
+  });
+}
 
-//   Step 3: Using a DOM selector, select the menu button (the element with a class of 'menu-button') currently on the DOM.
+/* Step 6: add the menu component to the DOM. */
+const menu = createMenu(menuItems);
+const header = document.querySelector('.header');
 
-//   Step 4: add a click event listener to the menu button. When clicked it should toggle the class 'menu--open' on the menu (your div with a 'menu' class).
-
-//   Step 5: return the menu component.
-
-//   Step 6: add the menu component to the DOM.
-  
-
+header.prepend(menu);
